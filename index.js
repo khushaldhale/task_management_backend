@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
 		})
 })
 
+
+const dbConnect = require("./config/database");
+dbConnect()
+
 const PORT = process.env.PORT || 4001;
 
 app.listen(PORT, () => {
