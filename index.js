@@ -16,6 +16,11 @@ app.get('/', (req, res) => {
 const dbConnect = require("./config/database");
 dbConnect()
 
+// routes mapping 
+
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/v1/auth", authRoutes)
+
 const PORT = process.env.PORT || 4001;
 
 app.listen(PORT, () => {
