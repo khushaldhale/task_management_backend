@@ -84,8 +84,8 @@ exports.login = async (req, res) => {
 			return res.cookie("token", token, {
 				//  change the option once go to production 
 				httpOnly: true,
-				secure: false,
-				sameSite: 'Lax',
+				secure: true,
+				sameSite: 'None',
 				expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
 			})
 				.status(200)
@@ -121,8 +121,8 @@ exports.logout = async (req, res) => {
 		return res.cookie("token", null, {
 			//  options should be changed while going into production
 			httpOnly: true,
-			secure: false,
-			sameSite: "Lax",
+			secure: true,
+			sameSite: "None",
 			expires: new Date(Date.now())
 		})
 			.status(200)

@@ -5,8 +5,10 @@ const taskSchema = require("../models/task");
 exports.createTask = async (req, res) => {
 	try {
 
+		//  date is getting stored in the format of UTC  means Z at end
+
 		const { task_name, task_desc, task_deadline, task_cat } = req.body;
-		const userId = req.decode._id;
+		const email = req.decode.email;
 
 		if (!task_name || !task_desc || !task_cat || !task_deadline) {
 			return res.status(400)
@@ -26,7 +28,7 @@ exports.createTask = async (req, res) => {
 		//  created task
 		const response1 = await taskSchema.create({ task_name, task_desc, task_cat, task_deadline });
 		//updated user 
-		const response2 = await userSchema.findByIdAndUpdate(userId, { $push: { tasks: response1._id } }, { new: true }).populate("tasks")
+		const response2 = await userSchema.findOneAndUpdate({ email }, { $push: { tasks: response1._id } }, { new: true }).populate("tasks")
 		return res.status(200)
 			.json({
 				success: true,
@@ -47,7 +49,7 @@ exports.createTask = async (req, res) => {
 exports.deleteTask = async (req, res) => {
 	try {
 		const taskId = req.params.id;
-		const userId = req.decode._id;
+		const email = req.decode.email;
 		if (!taskId) {
 			return res.status(400)
 				.json({
@@ -59,7 +61,7 @@ exports.deleteTask = async (req, res) => {
 		const response1 = await taskSchema.findByIdAndDelete(taskId);
 
 		if (response1) {
-			const response2 = await userSchema.findByIdAndUpdate(userId, { $pull: { tasks: response1._id } }, { new: true })
+			const response2 = await userSchema.findOneAndUpdate({ email }, { $pull: { tasks: response1._id } }, { new: true })
 
 			return res.status(200)
 				.json({
@@ -92,11 +94,12 @@ exports.deleteTask = async (req, res) => {
 exports.getAllTask = async (req, res) => {
 	try {
 
-		const userId = req.decode._id;
+		const email = req.decode.email;
 
-		const response1 = await userSchema.findById(userId).populate("tasks");
+		const response1 = await userSchema.findOne({ email }).populate("tasks");
 
-		if (response1.tasks.length > 0) {
+
+		if (response1?.tasks?.length > 0) {
 			return res.status(200)
 				.json({
 					success: true,

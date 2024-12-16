@@ -16,6 +16,7 @@ exports.authentication = async (req, res, next) => {
 		}
 
 		const decode = jwt.verify(token, process.env.JWT_SECRET);
+
 		if (decode) {
 			req.decode = decode;
 			return next()
@@ -37,7 +38,7 @@ exports.authentication = async (req, res, next) => {
 	}
 }
 
-exprts.isAdmin = async (req, res, next) => {
+exports.isAdmin = async (req, res, next) => {
 	if (req.decode.accountType !== "admin") {
 		return res.status(403)
 			.json({
@@ -49,7 +50,7 @@ exprts.isAdmin = async (req, res, next) => {
 }
 
 
-exprts.isUser = async (req, res, next) => {
+exports.isUser = async (req, res, next) => {
 	if (req.decode.accountType !== "user") {
 		return res.status(403)
 			.json({
