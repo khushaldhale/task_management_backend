@@ -16,6 +16,8 @@ const cookies = require("cookie-parser");
 app.use(cookies())
 
 
+require("./scheduler/job");
+
 
 // server check
 app.get('/', (req, res) => {
