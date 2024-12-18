@@ -174,3 +174,133 @@ exports.updateTask = async (req, res) => {
 			})
 	}
 }
+
+//   mark as a  complete
+//  mark as a progress
+// get specified task
+
+exports.markAsComplete = async (req, res) => {
+	try {
+
+		const taskId = req.params.id;
+
+
+		if (!taskId) {
+			return res.status(400)
+				.json({
+					success: true,
+					message: "kindly provide  an  task id"
+				})
+		}
+
+		const response = await taskSchema.findByIdAndUpdate(taskId, { task_status: "completed" }, { new: true })
+
+
+		if (response) {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "task is marked as complete",
+					data: response
+				})
+		}
+		return res.status(400)
+			.json({
+				success: false,
+				message: "task that are you trying to complete does not exists "
+			})
+	}
+	catch (error) {
+		console.log(error)
+		return res.status(500)
+			.json({
+				success: false,
+				message: "Internal error occured "
+			})
+	}
+}
+
+
+
+exports.markAsProgress = async (req, res) => {
+	try {
+
+		const taskId = req.params.id;
+
+
+		if (!taskId) {
+			return res.status(400)
+				.json({
+					success: true,
+					message: "kindly provide  an  task id"
+				})
+		}
+
+		const response = await taskSchema.findByIdAndUpdate(taskId, { task_status: "in-progress" }, { new: true })
+
+
+		if (response) {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "task is marked as in progress",
+					data: response
+				})
+		}
+		return res.status(400)
+			.json({
+				success: false,
+				message: "task that are you trying to mark as in-progress  does not exists "
+			})
+	}
+	catch (error) {
+		console.log(error)
+		return res.status(500)
+			.json({
+				success: false,
+				message: "Internal error occured "
+			})
+	}
+}
+
+
+exports.getParticularTask = async (req, res) => {
+	try {
+
+		const taskId = req.params.id;
+		if (!taskId) {
+			return res.status(400)
+				.json({
+					success: false,
+					message: "kindly provide  an task-id"
+				})
+		}
+
+		const response = await taskSchema.findById(taskId);
+
+		if (response) {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "particular task is fetched successully",
+					data: response
+				})
+		}
+		else {
+			return res.status(400)
+				.json({
+					success: false,
+					message: 'task that are you trying to fetch does not exists '
+				})
+		}
+
+	}
+	catch (error) {
+		console.log(error)
+		return res.status(500)
+			.json({
+				success: false,
+				message: "Internal error occured "
+			})
+	}
+}

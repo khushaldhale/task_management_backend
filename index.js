@@ -9,7 +9,7 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors({
 	//  will modify the origin later 
-	origin: "*",
+	origin: "http://localhost:3000",
 	credentials: true
 }))
 const cookies = require("cookie-parser");

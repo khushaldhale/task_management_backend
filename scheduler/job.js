@@ -8,7 +8,7 @@ const task = async () => {
 	const currentDate = new Date(Date.now())
 
 	//   we have to  fetch records  who have deadline greater than current time 
-	const response = await taskSchema.find({ task_deadline: { $gte: currentDate } });
+	const response = await taskSchema.find({ task_deadline: { $gte: currentDate }, task_status: { $in: ["pending", "in-progress"] } });
 
 	//  now  fetch the records having difference  as 15 and  send  mail to them
 	response.forEach((element) => {
@@ -25,7 +25,7 @@ const task = async () => {
 			// one more check here 
 			if (diffInMin > 0) {
 
-				console.log(" here we can send  mail to peoples and also whatsApp")
+				console.log(" here we can send  mail to peoples and also whatsApp", element.task_name)
 			}
 		}
 	})
