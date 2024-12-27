@@ -44,6 +44,9 @@ const teamRoutes = require("./routes/teamRoutes");
 app.use("/api/v1/teams", teamRoutes)
 
 
+const defectRoutes = require("./routes/defectRoutes");
+app.use("/api/v1/defects", defectRoutes)
+
 
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
