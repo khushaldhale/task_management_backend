@@ -75,7 +75,8 @@ exports.login = async (req, res) => {
 			//  token created , authentication and authorization info is provided 
 			const token = jwt.sign({
 				email: is_existing.email,
-				accountType: is_existing.accountType
+				accountType: is_existing.accountType,
+				user_id: is_existing._id
 			},
 				process.env.JWT_SECRET, {
 				expiresIn: "7d"

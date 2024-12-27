@@ -9,6 +9,7 @@ exports.createTask = async (req, res) => {
 
 		const { task_name, task_desc, task_deadline, task_cat } = req.body;
 		const email = req.decode.email;
+		const user_id = req.decode.user_id;
 
 		if (!task_name || !task_desc || !task_cat || !task_deadline) {
 			return res.status(400)
@@ -26,7 +27,7 @@ exports.createTask = async (req, res) => {
 				})
 		}
 		//  created task
-		const response1 = await taskSchema.create({ task_name, task_desc, task_cat, task_deadline });
+		const response1 = await taskSchema.create({ task_name, task_desc, task_cat, task_deadline, user_id });
 		//updated user 
 		const response2 = await userSchema.findOneAndUpdate({ email }, { $push: { tasks: response1._id } }, { new: true }).populate("tasks")
 		return res.status(200)
@@ -301,6 +302,96 @@ exports.getParticularTask = async (req, res) => {
 			.json({
 				success: false,
 				message: "Internal error occured "
+			})
+	}
+}
+
+//  create an api for the   task filtration 
+
+exports.filterTaskByStatus = async (req, res) => {
+	try {
+
+		const task_status = req.query.task_status;
+
+
+		if (!task_status) {
+			return res.status(400)
+				.json({
+					success: false,
+					message: "kindly  provide an task- status"
+				})
+		}
+
+
+		const response = await taskSchema.find({ task_status });
+		if (response.length > 0) {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "task are fetched  succesfully ",
+					data: response
+				})
+		}
+		else {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "No task is created yet ",
+					data: []
+				})
+		}
+	}
+	catch (error) {
+		console.log(error)
+		return res.status(500)
+			.json({
+				success: false,
+				message: "Internal  error occured "
+			})
+	}
+}
+
+//  filter task by category now
+
+exports.filterTaskByCategory = async (req, res) => {
+	try {
+
+		const task_cat = req.query.task_cat;
+
+		if (!task_cat) {
+			return res.status(400)
+				.json({
+					success: false,
+					message: "kindly  provide an task- status"
+				})
+		}
+
+
+
+		const response = await taskSchema.find({ task_cat });
+		if (response.length > 0) {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "task are fetched  succesfully ",
+					data: response
+				})
+		}
+		else {
+			return res.status(200)
+				.json({
+					success: true,
+					message: "No task is created yet ",
+					data: []
+				})
+		}
+	}
+	catch (error) {
+		console.log(error)
+		return res.status(500)
+			.json({
+				success: false,
+				message: "Internal  error occured "
 			})
 	}
 }
