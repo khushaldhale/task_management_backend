@@ -7,7 +7,7 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors({
 	//   origin is deployed over netlify
-	origin: "https://tmwebapp.netlify.app/",
+	origin: "https://tmwebapp.netlify.app",
 	credentials: true
 }))
 const cookies = require("cookie-parser");
