@@ -2,14 +2,12 @@ const express = require('express');
 const app = express();
 require("dotenv").config()
 
-
-
 //middlewares 
 app.use(express.json());
 const cors = require("cors");
 app.use(cors({
-	//  will modify the origin later 
-	origin: "http://localhost:3000",
+	//   origin is deployed over netlify
+	origin: "https://tmwebapp.netlify.app/",
 	credentials: true
 }))
 const cookies = require("cookie-parser");

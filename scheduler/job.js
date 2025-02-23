@@ -11,6 +11,7 @@ const task = async () => {
 	//   we have to  fetch records  who have deadline greater than current time 
 	const response = await taskSchema.find({ task_deadline: { $gte: currentDate }, task_status: { $in: ["pending", "in-progress"] } }).populate("user_id");
 
+	console.log("data ", response)
 	//  now  fetch the records having difference  as 15 and  send  mail to them
 	response.forEach(async (element) => {
 		//  converted to date
@@ -33,7 +34,7 @@ const task = async () => {
 				//  we have to modify the mapping to get the email 
 
 				//  printing the data 
-				// console.log(element)
+				console.log(element)
 				const html = `
 				<html>
 				  <body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f4f4f4; padding: 20px;">
