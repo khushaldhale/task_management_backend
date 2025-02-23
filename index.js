@@ -2,14 +2,12 @@ const express = require('express');
 const app = express();
 require("dotenv").config()
 
-
-
 //middlewares 
 app.use(express.json());
 const cors = require("cors");
 app.use(cors({
-	//  will modify the origin later 
-	origin: "http://localhost:3000",
+	//   origin is deployed over netlify
+	origin: "https://tmwebapp.netlify.app/",
 	credentials: true
 }))
 const cookies = require("cookie-parser");
@@ -40,7 +38,18 @@ app.use("/api/v1/auth", authRoutes)
 const taskRoutes = require("./routes/taskRoutes");
 app.use("/api/v1/tasks", taskRoutes)
 
+const teamRoutes = require("./routes/teamRoutes");
+app.use("/api/v1/teams", teamRoutes)
+
+
+const defectRoutes = require("./routes/defectRoutes");
+app.use("/api/v1/defects", defectRoutes)
+
+
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
 	console.log("server is listening at : ", PORT)
 })
+
+// have to appply rate limiting
+// otp logic is yet to apply 
